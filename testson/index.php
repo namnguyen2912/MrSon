@@ -121,8 +121,8 @@ if ($handle = opendir($target_dir)) {
                         $chuoibaso = substr(preg_replace('/\s+/', '', $tmp_row), 0, 3);
                         $chuoibonso = substr(preg_replace('/\s+/', '', $tmp_row), 0, 4);
                         $arrayKey3 = searchArrayKeyVal("id", $chuoibaso, $num_mobile);
-                        $arrayKey4 = searchArrayKeyVal("id", $chuoibonso, $num_mobile);
-                        
+                        $arrayKey4 = searchArrayKeyVal("id", $chuoibonso, $num_mobile);//
+                          
                         if ($arrayKey4!==false) {// cho phan 4 so nhu 0123,0124 cua vinaphone
                             $result = $chuoibonso.$num_mobile[$arrayKey4]['name'];
                             //tao file
