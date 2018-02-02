@@ -40,6 +40,7 @@ function searchArrayKeyVal($sKey, $id, $array) {
 }
 
 
+
 // doc tung dong file
 
 $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
@@ -113,16 +114,33 @@ if ($handle = opendir($target_dir)) {
                 $getFile = fgets($myfile);
                 $makeRows = explode("\n",$getFile);
                 foreach($makeRows as $tmp_row){
+                    
                     if(strlen(trim($tmp_row)) > 0){
                         // 3 so dau substr($tmp_row, 0, 3)
                         // 4 so dau substr($tmp_row, 0, 4)
                         // raw number
                         $rawnumb = preg_replace('/\s+/', '', $tmp_row);
-                        $chuoibaso = substr(preg_replace('/\s+/', '', $tmp_row), 0, 3);
-                        $chuoibonso = substr(preg_replace('/\s+/', '', $tmp_row), 0, 4);
+                        // xet truong hop ki tu dau tien khong phai la so 0
+                        $get_first = substr($rawnumb,0,1);
+                        $get_two = substr($rawnumb,0,2);// for case 84
+                        $get_third = substr($rawnumb,0,3);//+84
+                        
+                        if($get_first!=0&&$get_two!='84'){
+                            $rawnumb = '0'.$rawnumb;
+                        }elseif($get_two=='84'){
+                            $rawnumb = ltrim($rawnumb, '84');
+                            
+                            $rawnumb = '0'.$rawnumb;
+                           
+                        }elseif($get_third=='+84'){
+                            $rawnumb = str_replace('+84', 0, $rawnumb) ;
+                        }
+                       // echo $rawnumb.'<br>';
+                        $chuoibaso = substr(preg_replace('/\s+/', '', $rawnumb), 0, 3);
+                        $chuoibonso = substr(preg_replace('/\s+/', '', $rawnumb), 0, 4);
                         $arrayKey3 = searchArrayKeyVal("id", $chuoibaso, $num_mobile);
-                        $arrayKey4 = searchArrayKeyVal("id", $chuoibonso, $num_mobile);//
-                          
+                        $arrayKey4 = searchArrayKeyVal("id", $chuoibonso, $num_mobile);
+                        
                         if ($arrayKey4!==false) {// cho phan 4 so nhu 0123,0124 cua vinaphone
                             $result = $chuoibonso.$num_mobile[$arrayKey4]['name'];
                             //tao file
